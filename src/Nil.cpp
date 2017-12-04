@@ -9,7 +9,7 @@ void Nil::accept(PrimitiveVisitor* visitor) {
 }
 
 void Nil::print(std::ostream& out) const {
-  out << "Nil{}";
+  out << "NIL";
 }
 
 std::shared_ptr<Nil> Nil::_instance(new Nil());

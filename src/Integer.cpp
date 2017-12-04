@@ -10,7 +10,7 @@ void Integer::accept(PrimitiveVisitor* visitor) {
 }
 
 void Integer::print(std::ostream& out) const {
-  out << "Integer{" << _value << "}";
+  out << _value;
 }
 
 Integer::Integer(int value) : _value(value) {}

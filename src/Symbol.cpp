@@ -17,7 +17,7 @@ void Symbol::accept(PrimitiveVisitor* visitor) {
 }
 
 void Symbol::print(std::ostream& out) const {
-  out << "Symbol{" << _value << "}";
+  out << _value;
 }
 
 SymbolMap Symbol::_symbols;
