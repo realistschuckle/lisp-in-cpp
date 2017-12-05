@@ -1,0 +1,13 @@
+#ifndef TOKENTYPE_HPP
+#define TOKENTYPE_HPP
+
+enum TokenType {
+  TOKEN_TOKEN,
+  TOKEN_NIL,
+  TOKEN_OPEN_PAREN,
+  TOKEN_CLOSE_PAREN,
+  TOKEN_DOT,
+  TOKEN_EOF
+};
+
+#endif
