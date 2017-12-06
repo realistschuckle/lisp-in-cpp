@@ -10,6 +10,7 @@ class Lexer {
 public:
   Lexer(std::string input);
   std::shared_ptr<Token> next();
+  std::string getInput() const;
   
 private:
   static bool isTokenCharacter(char c);

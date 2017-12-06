@@ -3,9 +3,13 @@
 #include "Consp.hpp"
 
 std::shared_ptr<Cell> Cell::cons(std::shared_ptr<Primitive> left,
-			   std::shared_ptr<Primitive> right) {
+				 std::shared_ptr<Primitive> right) {
   std::shared_ptr<Cell> cell(new Cell(left, right));
   return cell;
+}
+
+void Cell::setCdr(std::shared_ptr<Primitive> cdr) {
+  _right = cdr;
 }
 
 void Cell::accept(PrimitiveVisitor* visitor) {
@@ -32,7 +36,7 @@ void Cell::printList(std::ostream& out) const {
       Cell* cell = static_cast<Cell*>(atom.get());
       out << " ";
       cell->printList(out);
-      atom = cell->cdr();
+      break;
     } else {
       out << " . ";
       out << atom;

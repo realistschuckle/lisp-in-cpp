@@ -13,6 +13,7 @@ public:
   virtual void accept(PrimitiveVisitor* visitor);
   inline std::shared_ptr<Primitive> car() { return _left; }
   inline std::shared_ptr<Primitive> cdr() { return _right; }
+  void setCdr(std::shared_ptr<Primitive> cdr);
 
 protected:
   virtual void print(std::ostream& out) const;
