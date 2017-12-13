@@ -1,5 +1,4 @@
 #include "Lexer.hpp"
-#include <iostream>
 #include "TokenType.hpp"
 
 Lexer::Lexer(std::string input)

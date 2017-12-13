@@ -15,6 +15,7 @@ public:
   static std::shared_ptr<Symbol> make(std::string value);
   static size_t numberOfSymbols();
   virtual void accept(PrimitiveVisitor* visitor);
+  inline std::string getValue() const { return _value; }
 
 protected:
   virtual void print(std::ostream& out) const;
