@@ -6,6 +6,7 @@
 #include "Consp.hpp"
 #include "Environment.hpp"
 #include "Cell.hpp"
+#include "Nilp.hpp"
 
 class Cdr : public Function {
 public:
@@ -14,6 +15,7 @@ public:
 
 private:
   Consp _consp;
+  Nilp _nilp;
 };
 
 #endif

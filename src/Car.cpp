@@ -4,6 +4,11 @@
 
 Primitive* Car::exec(Cell* args) {
   Primitive* car = args->car();
+  _nilp.reset();
+  car->accept(&_nilp);
+  if (_nilp.isNil()) {
+    return car;
+  }
   _consp.reset();
   car->accept(&_consp);
   if (_consp.isCell()) {
