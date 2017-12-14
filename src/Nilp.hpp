@@ -14,10 +14,11 @@ public:
   
   virtual void reset() { _isNil = false; }
   
-  virtual void visit(Nil* p)     { _isNil = true; }
-  virtual void visit(Integer* p) {}
-  virtual void visit(Symbol* p)  {}
-  virtual void visit(Cell* p)    {}
+  virtual void visit(Nil* p)      { _isNil = true; }
+  virtual void visit(Integer* p)  {}
+  virtual void visit(Symbol* p)   {}
+  virtual void visit(Cell* p)     {}
+  virtual void visit(Function* p) {}
 
 private:
   bool _isNil;

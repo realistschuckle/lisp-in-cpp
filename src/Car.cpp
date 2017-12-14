@@ -1,0 +1,17 @@
+#include "Car.hpp"
+#include "Evaluator.hpp"
+#include "ArgumentsException.hpp"
+
+Primitive* Car::exec(Cell* args) {
+  Primitive* car = args->car();
+  _consp.reset();
+  car->accept(&_consp);
+  if (_consp.isCell()) {
+    return _consp.getCell()->car();
+  }
+  throw ArgumentsException(args->toString());
+}
+
+std::string Car::getName() const noexcept {
+  return "CAR";
+}

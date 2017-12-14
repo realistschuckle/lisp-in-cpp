@@ -17,10 +17,11 @@ public:
   
   virtual void reset() { _symbol = 0; }
   
-  virtual void visit(Nil* p)     {}
-  virtual void visit(Integer* p) {}
-  virtual void visit(Symbol* p)  { _symbol = p; }
-  virtual void visit(Cell* p)    {}
+  virtual void visit(Nil* p)      {}
+  virtual void visit(Integer* p)  {}
+  virtual void visit(Symbol* p)   { _symbol = p; }
+  virtual void visit(Cell* p)     {}
+  virtual void visit(Function* p) {}
 
 private:
   Symbol* _symbol;

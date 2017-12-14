@@ -10,6 +10,7 @@ public:
   Primitive* eval(Primitive* expression);
 
 private:
+  Cell* evalList(Cell* cell);
   Environment* _env;
 };
 

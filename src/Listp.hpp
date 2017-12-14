@@ -16,10 +16,11 @@ public:
   
   virtual void reset() { _isList = false; }
   
-  virtual void visit(Nil* p)     {}
-  virtual void visit(Integer* p) {}
-  virtual void visit(Symbol* p)  {}
-  virtual void visit(Cell* p)    {
+  virtual void visit(Nil* p)      {}
+  virtual void visit(Integer* p)  {}
+  virtual void visit(Symbol* p)   {}
+  virtual void visit(Function* p) {}
+  virtual void visit(Cell* p)     {
     Consp consp;
     Nilp nilp;
     Cell* cell = p;

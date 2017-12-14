@@ -6,6 +6,7 @@
 #include "Consp.hpp"
 #include "Listp.hpp"
 #include "Nilp.hpp"
+#include "Functionp.hpp"
 
 Primitive* Evaluator::eval(Primitive* expression) {
   Symbolp symbolp;
@@ -66,6 +67,15 @@ Primitive* Evaluator::eval(Primitive* expression) {
       _env->set(var, value);
       return var;
     }
+    if (_env->has(symbolp.getSymbol())) {
+      Functionp functionp;
+      Primitive* fn = _env->get(symbolp.getSymbol());
+      fn->accept(&functionp);
+      if (functionp.isFunction()) {
+	Evaluator evaluator(_env);
+	return functionp.getFunction()->exec(evalList(consp.getCell()));
+      }
+    }
     if (opName == "QUIT") {
       return 0;
     }
@@ -73,4 +83,16 @@ Primitive* Evaluator::eval(Primitive* expression) {
   }
 
   throw SyntaxException(expression->toString());
+}
+
+Cell* Evaluator::evalList(Cell* cell) {
+  Primitive* value = eval(cell->car());
+  Consp consp;
+  cell->cdr()->accept(&consp);
+
+  if (consp.isCell()) {
+    return new Cell(value, evalList(consp.getCell()));
+  } else {
+    return new Cell(value, eval(cell->cdr()));
+  }
 }

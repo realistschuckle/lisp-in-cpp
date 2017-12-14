@@ -29,7 +29,7 @@ int main(int nargs, char* cargs[]) {
     } catch (ParseException& pe) {
       std::cout << "Parse Exception: " << pe.what() << std::endl;
     } catch (UnboundException& ue) {
-      std::cout << "Unbuond Exception: " << ue.what() << std::endl;
+      std::cout << "Unbound Exception: " << ue.what() << std::endl;
     } catch (SyntaxException& se) {
       std::cout << "Syntax Exception: " << se.what() << std::endl;
     } catch (ArgumentsException& ae) {

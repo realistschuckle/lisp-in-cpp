@@ -10,6 +10,7 @@ class Environment {
 public:
   Environment();
   Environment(Environment* parent);
+  bool has(Symbol* symbol) const;
   Primitive* get(Symbol* symbol) const;
   void set(Symbol* symbol, Primitive* value);
 
