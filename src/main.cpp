@@ -12,11 +12,7 @@ int main(int nargs, char* cargs[]) {
     try {
       std::cout << "Input: '" << input << "'" << std::endl;
       Primitive* p = parser.parse();
-      if (p) {
-	std::cout << "Parsed: " << *p << std::endl;
-      } else {
-	std::cout << "Could not parse: " << input << std::endl;
-      }
+      std::cout << "Parsed: " << *p << std::endl;
     } catch (ParseException& pe) {
       std::cout << "ERROR: " << pe.what() << std::endl;
     }

@@ -31,13 +31,13 @@ Primitive* Parser::parseLiteral(Token& token) {
     return new Integer(i);
   }
   if (token.getType() == TOKEN_NIL) {
-    return new Nil();
+    return Nil::make();
   }
   return Symbol::make(token.getValue());
 }
 
 Primitive* Parser::parseList() {
-  Primitive* result = new Nil();
+  Primitive* result = Nil::make();
   Cell* lastCell = 0;
   while (true) {
     Token t = _lexer.next();
@@ -65,7 +65,7 @@ Primitive* Parser::parseList() {
     if (lastCell == 0) {
       result = lastCell = new Cell(car, result);
     } else {
-      Cell* cell = new Cell(car, new Nil());
+      Cell* cell = new Cell(car, Nil::make());
       lastCell->setCdr(cell);
       lastCell = cell;
     }
