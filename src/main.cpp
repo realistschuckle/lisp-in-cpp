@@ -1,22 +1,40 @@
 #include <iostream>
 #include <string>
-#include <vector>
+#include "Evaluator.hpp"
 #include "Parser.hpp"
 #include "ParseException.hpp"
+#include "UnboundException.hpp"
+#include "SyntaxException.hpp"
+#include "ArgumentsException.hpp"
 
 int main(int nargs, char* cargs[]) {
-  std::vector<std::string> inputs = { "", "NIL", "1", "HELLO", "()", "(12345)", "(1 . 12345 )", "(1 2 NIL HELLO)", "(s (t . u) v . (w . nil))", "(. 3)", "(", "(1 .)", "(1", ")" };
-  
-  for (std::string input : inputs) {
+  Environment env;
+
+  while (true) {
+    std::string input;
+    std::cout << "> ";
+    std::getline(std::cin, input);
+    
     Parser parser(input);
     try {
-      std::cout << "Input: '" << input << "'" << std::endl;
-      Primitive* p = parser.parse();
-      std::cout << "Parsed: " << *p << std::endl;
+      Primitive* expression = parser.parse();
+      Evaluator evaluator(&env);
+      Primitive* result = evaluator.eval(expression);
+
+      if (result) {
+	std::cout << *result << std::endl;
+      } else {
+	break;
+      }
     } catch (ParseException& pe) {
-      std::cout << "ERROR: " << pe.what() << std::endl;
+      std::cout << "Parse Exception: " << pe.what() << std::endl;
+    } catch (UnboundException& ue) {
+      std::cout << "Unbuond Exception: " << ue.what() << std::endl;
+    } catch (SyntaxException& se) {
+      std::cout << "Syntax Exception: " << se.what() << std::endl;
+    } catch (ArgumentsException& ae) {
+      std::cout << "Arguments Exception: " << ae.what() << std::endl;
     }
-    std::cout << std::endl;
   }
   
   return 0;
