@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Evaluator.hpp"
 #include "SyntaxException.hpp"
 #include "ArgumentsException.hpp"
@@ -16,10 +17,11 @@ Primitive* Evaluator::eval(Primitive* expression) {
   expression->accept(&symbolp);
   expression->accept(&consp);
   expression->accept(&listp);
+  expression->accept(&nilp);
   
   if (symbolp.isSymbol()) {
     return _env->get(symbolp.getSymbol());
-  } else if(!consp.isCell()) {
+  } else if(!consp.isCell() || nilp.isNil()) {
     return expression;
   }
 
@@ -86,6 +88,11 @@ Primitive* Evaluator::eval(Primitive* expression) {
 }
 
 Cell* Evaluator::evalList(Cell* cell) {
+  Nilp nilp;
+  cell->accept(&nilp);
+  if (nilp.isNil()) {
+    return cell;
+  }
   Primitive* value = eval(cell->car());
   Consp consp;
   cell->cdr()->accept(&consp);

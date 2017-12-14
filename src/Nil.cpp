@@ -12,6 +12,6 @@ void Nil::print(std::ostream& out) const {
   out << "NIL";
 }
 
-Nil::Nil() {}
+Nil::Nil() : Cell(this, this) {}
 
 Nil* Nil::_global = new Nil();

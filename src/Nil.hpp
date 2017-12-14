@@ -2,10 +2,10 @@
 #define NIL_HPP
 
 #include <iostream>
-#include "Primitive.hpp"
+#include "Cell.hpp"
 #include "PrimitiveVisitor.hpp"
 
-class Nil : public Primitive {
+class Nil : public Cell {
 public:
   static Nil* make();
   void accept(PrimitiveVisitor* visitor);

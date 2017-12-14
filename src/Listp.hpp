@@ -28,16 +28,17 @@ public:
 
     while (true) {
       consp.reset();
+      nilp.reset();
       right = cell->cdr();
       right->accept(&consp);
-      if (consp.isCell()) {
-	cell = consp.getCell();
-      } else {
+      right->accept(&nilp);
+      if (nilp.isNil() || !consp.isCell()) {
 	break;
+      } else {
+	cell = consp.getCell();
       }
     }
 
-    right->accept(&nilp);
     _isList = nilp.isNil();
   }
 

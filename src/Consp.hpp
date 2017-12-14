@@ -12,7 +12,7 @@ public:
   Consp() : _cell(0) {}
   virtual void reset() { _cell = 0; }
   
-  virtual void visit(Nil* p)      {}
+  virtual void visit(Nil* p)      { _cell = p; }
   virtual void visit(Integer* p)  {}
   virtual void visit(Symbol* p)   {}
   virtual void visit(Cell* p)     { _cell = p; }
