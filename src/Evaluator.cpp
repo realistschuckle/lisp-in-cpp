@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Evaluator.hpp"
 #include "SyntaxException.hpp"
 #include "ArgumentsException.hpp"

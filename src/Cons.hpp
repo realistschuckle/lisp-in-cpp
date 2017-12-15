@@ -4,7 +4,7 @@
 #include <string>
 #include "Function.hpp"
 #include "Consp.hpp"
-#include "Environment.hpp"
+#include "Nilp.hpp"
 
 class Cons : public Function {
 public:
@@ -13,6 +13,7 @@ public:
 
 private:
   Consp _consp;
+  Nilp _nilp;
 };
 
 #endif

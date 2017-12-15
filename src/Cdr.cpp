@@ -3,6 +3,12 @@
 #include "ArgumentsException.hpp"
 
 Primitive* Cdr::exec(Cell* args) {
+  _nilp.reset();
+  args->accept(&_nilp);
+  if (_nilp.isNil()) {
+    throw ArgumentsException(args->toString());
+  }
+
   Primitive* car = args->car();
   _nilp.reset();
   car->accept(&_nilp);

@@ -1,11 +1,23 @@
 #include "Environment.hpp"
+#include "Add.hpp"
 #include "Car.hpp"
 #include "Cdr.hpp"
 #include "Cons.hpp"
+#include "Divide.hpp"
+#include "Multiply.hpp"
+#include "Subtract.hpp"
 #include "UnboundException.hpp"
 
 Environment::Environment() : _parent(0) {
-  Function* builtins[] = { new Car(), new Cdr(), new Cons() };
+  Function* builtins[] = {
+    new Car(),
+    new Cdr(),
+    new Cons(),
+    new Add(),
+    new Subtract(),
+    new Multiply(),
+    new Divide()
+  };
   for (auto builtin : builtins) {
     _values[builtin->getName()] = builtin;
   }
