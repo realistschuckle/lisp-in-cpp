@@ -7,8 +7,11 @@
 #include "Listp.hpp"
 #include "Nilp.hpp"
 #include "Functionp.hpp"
+#include "Closure.hpp"
+#include "Closurep.hpp"
 
 Primitive* Evaluator::eval(Primitive* expression) {
+  Closurep closurep;
   Symbolp symbolp;
   Consp consp;
   Listp listp;
@@ -34,7 +37,7 @@ Primitive* Evaluator::eval(Primitive* expression) {
   symbolp.reset();
   nilp.reset();
   consp.reset();
-  
+
   op->accept(&symbolp);
   args->accept(&nilp);
   args->accept(&consp);
@@ -53,14 +56,14 @@ Primitive* Evaluator::eval(Primitive* expression) {
       symbolp.reset();
       consp.getCell()->car()->accept(&symbolp);
       if (!symbolp.isSymbol()) {
-	throw new ArgumentsException(expression->toString());
+	throw ArgumentsException(expression->toString());
       }
       Symbol* var = symbolp.getSymbol();
       Primitive* value = consp.getCell()->cdr();
       consp.reset();
       value->accept(&consp);
       if (!consp.isCell()) {
-	throw new ArgumentsException(expression->toString());
+	throw ArgumentsException(expression->toString());
       }
 
       Evaluator evaluator(_env);
@@ -68,19 +71,59 @@ Primitive* Evaluator::eval(Primitive* expression) {
       _env->set(var, value);
       return var;
     }
+    if (opName == "LAMBDA") {
+      if (nilp.isNil() || !consp.isCell()) {
+	throw ArgumentsException(expression->toString());
+      }
+      Primitive* pargs = consp.getCell()->car();
+      Primitive* pbody = consp.getCell()->cdr();
+
+      Listp listp;
+      consp.reset();
+      pargs->accept(&listp);
+      pargs->accept(&consp);
+      if (!listp.isList()) {
+	throw ArgumentsException(expression->toString());
+      }
+      Cell* largs = consp.getCell();
+      
+      consp.reset();
+      pbody->accept(&consp);
+      if (!consp.isCell()) {
+	throw ArgumentsException(expression->toString());
+      }
+      Primitive* lbody = consp.getCell()->car();
+
+      return new Closure(_env, largs, lbody);
+    }
     if (_env->has(symbolp.getSymbol())) {
       Functionp functionp;
       Primitive* fn = _env->get(symbolp.getSymbol());
       fn->accept(&functionp);
+      fn->accept(&closurep);
       if (functionp.isFunction()) {
 	Evaluator evaluator(_env);
 	return functionp.getFunction()->exec(evalList(consp.getCell()));
+      }
+      if (closurep.isClosure()) {
+	return closurep.getClosure()->evaluate(evalList(consp.getCell()));
       }
     }
     if (opName == "QUIT") {
       return 0;
     }
     throw UnboundException(opName);
+  }
+  consp.reset();
+  op->accept(&consp);
+  if (consp.isCell()) {
+    Primitive* activeop = eval(op);
+    activeop->accept(&closurep);
+    if (closurep.isClosure()) {
+      consp.reset();
+      args->accept(&consp);
+      return closurep.getClosure()->evaluate(evalList(consp.getCell()));
+    }
   }
 
   throw SyntaxException(expression->toString());

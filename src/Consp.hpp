@@ -17,6 +17,7 @@ public:
   virtual void visit(Symbol* p)   {}
   virtual void visit(Cell* p)     { _cell = p; }
   virtual void visit(Function* p) {}
+  virtual void visit(Closure* p)  {}
 
   inline bool isCell() const { return _cell != 0; }
   inline Cell* getCell() const { return _cell; }

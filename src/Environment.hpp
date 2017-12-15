@@ -14,6 +14,7 @@ public:
   Primitive* get(Symbol* symbol) const;
   void set(Symbol* symbol, Primitive* value);
 
+  friend std::ostream& operator<<(std::ostream& out, const Environment& env);
 private:
   Environment* _parent;
   std::map<std::string, Primitive*> _values;

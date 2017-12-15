@@ -19,6 +19,7 @@ public:
   virtual void visit(Symbol* p)   {}
   virtual void visit(Cell* p)     {}
   virtual void visit(Function* p) {}
+  virtual void visit(Closure* p)  {}
 
 private:
   bool _isNil;

@@ -6,6 +6,7 @@ class Integer;
 class Symbol;
 class Cell;
 class Function;
+class Closure;
 
 class PrimitiveVisitor {
 public:
@@ -16,6 +17,7 @@ public:
   virtual void visit(Symbol* p) = 0;
   virtual void visit(Cell* p) = 0;
   virtual void visit(Function* p) = 0;
+  virtual void visit(Closure* p) = 0;
 };
 
 #endif

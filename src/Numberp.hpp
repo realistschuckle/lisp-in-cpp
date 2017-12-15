@@ -18,6 +18,7 @@ public:
   virtual void visit(Symbol* p)   {}
   virtual void visit(Cell* p)     {}
   virtual void visit(Function* p) {}
+  virtual void visit(Closure* p)  {}
   virtual void visit(Integer* p)  {
     _isNumber = true;
     _value = p->getValue();

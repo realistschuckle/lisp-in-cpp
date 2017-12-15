@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Environment.hpp"
 #include "Add.hpp"
 #include "Car.hpp"
@@ -28,7 +29,10 @@ Environment::Environment(Environment* parent)
 
 bool Environment::has(Symbol* symbol) const {
   std::string key = symbol->getValue();
-  return _values.find(key) != _values.end();
+  if (_values.find(key) != _values.end()) {
+    return true;
+  }
+  return _parent && _parent->has(symbol);
 }
 
 Primitive* Environment::get(Symbol* symbol) const {
@@ -46,4 +50,20 @@ Primitive* Environment::get(Symbol* symbol) const {
 void Environment::set(Symbol* symbol, Primitive* value) {
   std::string key = symbol->getValue();
   _values[key] = value;
+}
+
+std::ostream& operator<<(std::ostream& out, const Environment& env) {
+  out << "ENVIRONMENT"
+      << std::endl;
+  for (auto it = env._values.begin(); it != env._values.end(); ++it) {
+    out << "\t"
+	<< it->first
+	<< ": "
+	<< *(it->second)
+	<< std::endl;
+  }
+  if (env._parent) {
+    out << *(env._parent);
+  }
+  return out;
 }

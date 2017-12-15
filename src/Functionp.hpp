@@ -17,6 +17,7 @@ public:
   virtual void visit(Integer* p)  {}
   virtual void visit(Symbol* p)   {}
   virtual void visit(Cell* p)     {}
+  virtual void visit(Closure* p)  {}
   virtual void visit(Function* p) { _function = p; }
 
   inline bool isFunction() const { return _function != 0; }

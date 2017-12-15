@@ -22,6 +22,7 @@ public:
   virtual void visit(Symbol* p)   { _symbol = p; }
   virtual void visit(Cell* p)     {}
   virtual void visit(Function* p) {}
+  virtual void visit(Closure* p)  {}
 
 private:
   Symbol* _symbol;
