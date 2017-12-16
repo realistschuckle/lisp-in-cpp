@@ -53,7 +53,16 @@ void Closure::fillEnvironment(Environment* env, Cell* args) {
     
     sym.reset();
     symbols->car()->accept(&sym);
-    env->set(sym.getSymbol(), args->car());
+    if (sym.getSymbol()->getValue() == "&REST") {
+      syms.reset();
+      sym.reset();
+      symbols->cdr()->accept(&syms);
+      syms.getCell()->car()->accept(&sym);
+      env->set(sym.getSymbol(), values);
+      break;
+    } else {
+      env->set(sym.getSymbol(), values->car());
+    }
 
     syms.reset();
     vals.reset();
