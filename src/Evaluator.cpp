@@ -54,13 +54,21 @@ Primitive* Evaluator::eval(Primitive* expression) {
       if (nilp.isNil() || !consp.isCell()) {
 	throw ArgumentsException(expression->toString());
       }
+      Primitive* name = consp.getCell()->car();
+      Primitive* value = consp.getCell()->cdr();
+
       symbolp.reset();
-      consp.getCell()->car()->accept(&symbolp);
+      consp.reset();
+      name->accept(&consp);
+      if (consp.isCell()) {
+	eval(consp.getCell())->accept(&symbolp);
+      }
+      name->accept(&symbolp);
       if (!symbolp.isSymbol()) {
 	throw ArgumentsException(expression->toString());
       }
       Symbol* var = symbolp.getSymbol();
-      Primitive* value = consp.getCell()->cdr();
+      
       consp.reset();
       value->accept(&consp);
       if (!consp.isCell()) {
