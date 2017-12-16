@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Environment.hpp"
+#include "Symbol.hpp"
 #include "Add.hpp"
 #include "Car.hpp"
 #include "Cdr.hpp"
@@ -7,6 +8,8 @@
 #include "Divide.hpp"
 #include "Multiply.hpp"
 #include "Subtract.hpp"
+#include "NumberEq.hpp"
+#include "NumberLt.hpp"
 #include "UnboundException.hpp"
 
 Environment::Environment() : _parent(0) {
@@ -17,11 +20,14 @@ Environment::Environment() : _parent(0) {
     new Add(),
     new Subtract(),
     new Multiply(),
-    new Divide()
+    new Divide(),
+    new NumberEq(),
+    new NumberLt()
   };
   for (auto builtin : builtins) {
     _values[builtin->getName()] = builtin;
   }
+  set(Symbol::make("T"), Symbol::make("T"));
 }
 
 Environment::Environment(Environment* parent)

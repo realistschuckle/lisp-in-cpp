@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Evaluator.hpp"
 #include "SyntaxException.hpp"
 #include "ArgumentsException.hpp"
@@ -95,6 +96,40 @@ Primitive* Evaluator::eval(Primitive* expression) {
       Primitive* lbody = consp.getCell()->car();
 
       return new Closure(_env, largs, lbody);
+    }
+    if (opName == "IF") {
+      if (nilp.isNil() || !consp.isCell()) {
+	throw ArgumentsException(expression->toString());
+      }
+      Primitive* test = consp.getCell()->car();
+
+      Primitive* rest = consp.getCell()->cdr();
+      consp.reset();
+      nilp.reset();
+      rest->accept(&nilp);
+      rest->accept(&consp);
+      if (nilp.isNil() || !consp.isCell()) {
+	throw ArgumentsException(expression->toString());
+      }
+      Primitive* texpr = consp.getCell()->car();
+
+      rest = consp.getCell()->cdr();
+      consp.reset();
+      nilp.reset();
+      rest->accept(&nilp);
+      rest->accept(&consp);
+      if (nilp.isNil() || !consp.isCell()) {
+	throw ArgumentsException(expression->toString());
+      }
+      Primitive* fexpr = consp.getCell()->car();
+
+      nilp.reset();
+      Evaluator evaluator(_env);
+      evaluator.eval(test)->accept(&nilp);
+      if (nilp.isNil()) {
+	return evaluator.eval(fexpr);
+      }
+      return evaluator.eval(texpr);
     }
     if (_env->has(symbolp.getSymbol())) {
       Functionp functionp;
