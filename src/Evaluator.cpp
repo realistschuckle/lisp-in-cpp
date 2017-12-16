@@ -72,6 +72,12 @@ Primitive* Evaluator::eval(Primitive* expression) {
       _env->set(var, value);
       return var;
     }
+    if (opName == "EVAL") {
+      if (nilp.isNil() || !consp.isCell()) {
+	throw ArgumentsException(expression->toString());
+      }
+      return eval(eval(consp.getCell()->car()));
+    }
     if (opName == "LAMBDA") {
       if (nilp.isNil() || !consp.isCell()) {
 	throw ArgumentsException(expression->toString());
