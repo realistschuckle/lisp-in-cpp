@@ -28,6 +28,11 @@ Token Lexer::next() {
     Token t(TOKEN_CLOSE_PAREN, _input, _start, _end);
     return t;
   }
+  if (_input[_end] == '\'') {
+    _end += 1;
+    Token t(TOKEN_TICK, _input, _start, _end);
+    return t;
+  }
   if (_input[_end] == '.') {
     _end += 1;
     Token t(TOKEN_DOT, _input, _start, _end);

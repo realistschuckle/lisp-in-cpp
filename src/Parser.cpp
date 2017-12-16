@@ -20,6 +20,9 @@ Primitive* Parser::parse(Token& token) {
     return parseList();
   } else if (token.getType() == TOKEN_CLOSE_PAREN) {
     throw ParseException("Unexpected close paren.");
+  } else if (token.getType() == TOKEN_TICK) {
+    Token next = _lexer.next();
+    return new Cell(Symbol::make("QUOTE"), new Cell(parse(next), Nil::make()));
   } else {
     return parseLiteral(token);
   }

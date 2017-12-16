@@ -9,6 +9,9 @@ Token::Token(TokenType type, std::string input, int start, int end)
 
 std::string Token::getDesc() const {
   switch(_type) {
+  case TOKEN_TICK:
+    return "'";
+    
   case TOKEN_EOF:
     return "EOF";
       
@@ -34,6 +37,9 @@ std::string Token::getDesc() const {
 
 std::string Token::getValue() const {
   switch(_type) {
+  case TOKEN_TICK:
+    return "'";
+    
   case TOKEN_EOF:
     return "";
       
