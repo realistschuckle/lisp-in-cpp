@@ -16,7 +16,7 @@ public:
   
   virtual void reset() { _isList = false; }
   
-  virtual void visit(Nil* p)      {}
+  virtual void visit(Nil* p)      { _isList = true; }
   virtual void visit(Integer* p)  {}
   virtual void visit(Symbol* p)   {}
   virtual void visit(Function* p) {}

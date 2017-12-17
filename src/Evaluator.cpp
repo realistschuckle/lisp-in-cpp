@@ -86,7 +86,7 @@ Primitive* Evaluator::eval(Primitive* expression) {
       }
       return eval(eval(consp.getCell()->car()));
     }
-    if (opName == "LAMBDA") {
+    if (opName == "LAMBDA" || opName == "MACRO") {
       if (nilp.isNil() || !consp.isCell()) {
 	throw ArgumentsException(expression->toString());
       }
@@ -109,7 +109,7 @@ Primitive* Evaluator::eval(Primitive* expression) {
       }
       Primitive* lbody = consp.getCell()->car();
 
-      return new Closure(_env, largs, lbody);
+      return new Closure(opName == "MACRO", _env, largs, lbody);
     }
     if (opName == "IF") {
       if (nilp.isNil() || !consp.isCell()) {
@@ -145,6 +145,34 @@ Primitive* Evaluator::eval(Primitive* expression) {
       }
       return evaluator.eval(texpr);
     }
+    if (opName == "EXPAND") {
+      if (nilp.isNil() || !consp.isCell()) {
+	throw ArgumentsException(expression->toString());
+      }
+
+      Primitive* whatToExpand = consp.getCell()->car();
+      consp.reset();
+      whatToExpand->accept(&consp);
+      if (!consp.isCell()) {
+	throw ArgumentsException(whatToExpand->toString());
+      }
+
+      Cell* expandExpression = consp.getCell();
+      symbolp.reset();
+      expandExpression->car()->accept(&symbolp);
+      if (!symbolp.isSymbol()) {
+	throw ArgumentsException(expression->toString());
+      }
+      
+      Primitive* macro = _env->get(symbolp.getSymbol());
+      macro->accept(&closurep);
+      if (!closurep.isClosure() || !closurep.getClosure()->isMacro()) {
+	throw ArgumentsException(expression->toString());
+      }
+      consp.reset();
+      expandExpression->cdr()->accept(&consp);
+      return closurep.getClosure()->evaluate(consp.getCell());
+    }
     if (_env->has(symbolp.getSymbol())) {
       Functionp functionp;
       Primitive* fn = _env->get(symbolp.getSymbol());
@@ -154,8 +182,11 @@ Primitive* Evaluator::eval(Primitive* expression) {
 	Evaluator evaluator(_env);
 	return functionp.getFunction()->exec(evalList(consp.getCell()));
       }
-      if (closurep.isClosure()) {
+      if (closurep.isClosure() && !closurep.getClosure()->isMacro()) {
 	return closurep.getClosure()->evaluate(evalList(consp.getCell()));
+      } else if (closurep.isClosure()) {
+	Primitive* expansion =  closurep.getClosure()->evaluate(consp.getCell());
+	return eval(expansion);
       }
     }
     if (opName == "QUIT") {

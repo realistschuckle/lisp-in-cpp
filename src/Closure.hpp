@@ -8,8 +8,9 @@
 
 class Closure : public Primitive {
 public:
-  Closure(Environment* env, Cell* arglist, Primitive* body);
+  Closure(bool isMacro, Environment* env, Cell* arglist, Primitive* body);
   Primitive* evaluate(Cell* args);
+  inline bool isMacro() { return _isMacro; }
   
   virtual void accept(PrimitiveVisitor* visitor);
 
@@ -21,6 +22,7 @@ private:
   Environment* _parent;
   Cell* _arglist;
   Primitive* _body;
+  bool _isMacro;
 };
 
 #endif

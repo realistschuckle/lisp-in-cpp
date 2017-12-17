@@ -5,17 +5,18 @@
 #include "Evaluator.hpp"
 #include "ArgumentsException.hpp"
 
-Closure::Closure(Environment* env, Cell* arglist, Primitive* body)
+Closure::Closure(bool isMacro, Environment* env, Cell* arglist, Primitive* body)
   : _parent(env),
     _arglist(arglist),
-    _body(body) {}
+    _body(body),
+    _isMacro(isMacro) {}
 
 void Closure::accept(PrimitiveVisitor* visitor) {
   visitor->visit(this);
 }
 
 void Closure::print(std::ostream& out) const {
-  out << "#<LAMBDA:"
+  out << (_isMacro ? "#<MACRO:" : "#<LAMBDA:")
       << *_arglist
       << " "
       << *_body
