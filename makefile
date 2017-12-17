@@ -15,7 +15,7 @@ LDFLAGS :=
 CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -std=c++11
 
 .PHONY: all
-all: $(BUILD_DIR)/$(TARGET_EXEC)
+all: $(BUILD_DIR)/$(TARGET_EXEC) ./build/library.lisp
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
 	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
@@ -23,6 +23,12 @@ $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
 $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(MKDIR_P) $(dir $@)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+./build/library.lisp: ./src/library.lisp
+	cp ./src/library.lisp ./build/library.lisp
+
+./src/library.lisp:
+	touch ./src/library.lisp
 
 .PHONY: clean
 clean:

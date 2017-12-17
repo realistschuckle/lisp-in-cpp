@@ -10,6 +10,8 @@
 #include "Subtract.hpp"
 #include "NumberEq.hpp"
 #include "NumberLt.hpp"
+#include "Eq.hpp"
+#include "Conspb.hpp"
 #include "UnboundException.hpp"
 
 Environment::Environment() : _parent(0) {
@@ -22,7 +24,9 @@ Environment::Environment() : _parent(0) {
     new Multiply(),
     new Divide(),
     new NumberEq(),
-    new NumberLt()
+    new NumberLt(),
+    new Eq(),
+    new Conspb()
   };
   for (auto builtin : builtins) {
     _values[builtin->getName()] = builtin;
