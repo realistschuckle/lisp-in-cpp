@@ -12,6 +12,15 @@ std::string Token::getDesc() const {
   case TOKEN_TICK:
     return "'";
     
+  case TOKEN_BACKTICK:
+    return "`";
+    
+  case TOKEN_COMMA:
+    return ",";
+    
+  case TOKEN_AT:
+    return "@";
+    
   case TOKEN_EOF:
     return "EOF";
       
@@ -39,6 +48,15 @@ std::string Token::getValue() const {
   switch(_type) {
   case TOKEN_TICK:
     return "'";
+    
+  case TOKEN_BACKTICK:
+    return "`";
+    
+  case TOKEN_COMMA:
+    return ",";
+    
+  case TOKEN_AT:
+    return "@";
     
   case TOKEN_EOF:
     return "";

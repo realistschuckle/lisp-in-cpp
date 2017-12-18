@@ -23,6 +23,17 @@ Primitive* Parser::parse(Token& token) {
   } else if (token.getType() == TOKEN_TICK) {
     Token next = _lexer.next();
     return new Cell(Symbol::make("QUOTE"), new Cell(parse(next), Nil::make()));
+  } else if (token.getType() == TOKEN_BACKTICK) {
+    Token next = _lexer.next();
+    return new Cell(Symbol::make("QUASIQUOTE"), new Cell(parse(next), Nil::make()));    
+  } else if (token.getType() == TOKEN_COMMA) {
+    std::string type = "UNQUOTE";
+    Token next = _lexer.next();
+    if (next.getType() == TOKEN_AT) {
+      type = "UNQUOTE-SPLICING";
+      next = _lexer.next();
+    }
+    return new Cell(Symbol::make(type), new Cell(parse(next), Nil::make()));    
   } else {
     return parseLiteral(token);
   }

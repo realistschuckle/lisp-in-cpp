@@ -38,6 +38,21 @@ Token Lexer::next() {
     Token t(TOKEN_DOT, _input, _start, _end);
     return t;
   }
+  if (_input[_end] == '`') {
+    _end += 1;
+    Token t(TOKEN_BACKTICK, _input, _start, _end);
+    return t;
+  }
+  if (_input[_end] == ',') {
+    _end += 1;
+    Token t(TOKEN_COMMA, _input, _start, _end);
+    return t;
+  }
+  if (_input[_end] == '@') {
+    _end += 1;
+    Token t(TOKEN_AT, _input, _start, _end);
+    return t;
+  }
   while (isSymbolly()) {
     _end += 1;
   }
