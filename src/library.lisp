@@ -16,3 +16,8 @@
 (defun cadr (x) (car (cdr x)))
 
 (define quasiquote (macro (x) (if (consp x) (if (eq (car x) 'unquote) (cadr x) (if (eq (caar x) 'unquote-splicing) (list 'append (cadr (car x)) (list 'quasiquote (cdr x))) (list 'cons (list 'quasiquote (car x)) (list 'quasiquote (cdr x))))) (list 'quote x))))
+
+(define quasiquote (macro (x) (if (consp x) (if (eq (car x) 'unquote) (cadr x) (if (eq (car x) 'unquote-splicing) (list 'append (cadr (car x)) (list 'quasiquote (cdr x))) (list 'cons (list 'quasiquote (car x)) (list 'quasiquote (cdr x))))) (list 'quote x))))
+
+
+
